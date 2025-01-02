@@ -1,0 +1,6 @@
+fastapi
+transformers
+sentence-transformers
+scikit-learn
+uvicorn
+pandas

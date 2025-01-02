@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bhagavad Gita Advisor</title>
+</head>
+<body>
+    <h1>Bhagavad Gita Life Advisor</h1>
+    <input type="text" id="query" placeholder="Enter your query..." />
+    <button onclick="getAdvice()">Get Advice</button>
+    <div id="recommendations"></div>
+
+    <script>
+        async function getAdvice() {
+            const query = document.getElementById("query").value;
+            if (!query) {
+                alert("Please enter a query.");
+                return;
+            }
+
+            // Send the request to the FastAPI /recommend endpoint
+            const response = await fetch(`/recommend?query=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            
+            // Get the div element to display the recommendations
+            const recDiv = document.getElementById("recommendations");
+
+            // Check if recommendations were received
+            if (data.recommendations && data.recommendations.length > 0) {
+                // Format the response into a readable list
+                recDiv.innerHTML = "<h3>Recommendations:</h3><ul>";
+                data.recommendations.forEach(verse => {
+                    recDiv.innerHTML += `<li>${verse}</li>`;
+                });
+                recDiv.innerHTML += "</ul>";
+            } else {
+                recDiv.innerHTML = `<p>No recommendations found for "${data.query}".</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
